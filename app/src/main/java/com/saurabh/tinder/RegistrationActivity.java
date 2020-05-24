@@ -109,8 +109,10 @@ public class RegistrationActivity extends AppCompatActivity {
                                 Toast.makeText(RegistrationActivity.this, "Registration Error!", Toast.LENGTH_SHORT).show();
                             else {
                                 final String userID = mAuth.getCurrentUser().getUid();
-                                final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(mRadioButton.getText().toString()).child(userID).child("Name");
+                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Name");
                                 currentUserDB.setValue(name);
+                                currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Sex");
+                                currentUserDB.setValue(mRadioButton.getText().toString());
                                 StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userID);
                                 Bitmap bitmap = null;
 
@@ -135,7 +137,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                                        final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(mRadioButton.getText().toString()).child(userID).child("Profile Image URL");
+                                        final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Profile Image URL");
                                         currentUserDB.setValue(downloadUrl.toString());
                                         finish();
                                         return;

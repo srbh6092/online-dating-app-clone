@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLeftCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
                 String userId  = obj.getUserId();
-                usersDb.child(oppositeUserSex).child(userId).child("connections").child("nope").child(currentUid).setValue(true);
+                usersDb.child(userId).child("connections").child("nope").child(currentUid).setValue(true);
                 Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
             }
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             public void onRightCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
                 String userId  = obj.getUserId();
-                usersDb.child(oppositeUserSex).child(userId).child("connections").child("yeps").child(currentUid).setValue(true);
+                usersDb.child(userId).child("connections").child("yeps").child(currentUid).setValue(true);
                 isConnectionMatch(userId);
                 Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_SHORT).show();
             }
@@ -109,15 +109,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void isConnectionMatch(String userId) {
-        DatabaseReference currentUserDatabaseReference = usersDb.child(userSex).child(currentUid).child("connections").child("yeps").child(userId);
+        DatabaseReference currentUserDatabaseReference = usersDb.child(currentUid).child("connections").child("yeps").child(userId);
         currentUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
                 {
                     Toast.makeText(MainActivity.this, "It's a match!!!", Toast.LENGTH_LONG).show();
-                    usersDb.child(oppositeUserSex).child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUid).setValue(true);
-                    usersDb.child(userSex).child(currentUid).child("connections").child("matches").child(dataSnapshot.getKey()).setValue(true);
+                    usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUid).setValue(true);
+                    usersDb.child(currentUid).child("connections").child("matches").child(dataSnapshot.getKey()).setValue(true);
                 }
             }
 
@@ -131,61 +131,24 @@ public class MainActivity extends AppCompatActivity {
     public void checkUserSex()
     {
         final FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-
-        DatabaseReference maleDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Male");
-        maleDB.addChildEventListener(new ChildEventListener() {
+        DatabaseReference userDB = usersDb.child(user.getUid());
+        userDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid()))
-                {
-                    userSex="Male";
-                    oppositeUserSex="Female";
-                    Toast.makeText(MainActivity.this, "Reached", Toast.LENGTH_SHORT).show();
-                    getOppositeSexUsers();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists())
+                        if (dataSnapshot.child("Sex").getValue()!=null) {
+                            userSex = dataSnapshot.child("Sex").getValue().toString();
+                            switch (userSex) {
+                                case "Male":
+                                    oppositeUserSex = "Female";
+                                    break;
+                                case "Female":
+                                    oppositeUserSex = "Male";
+                                    break;
+                            }
+                            getOppositeSexUsers();
+                        }
                 }
-            }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        DatabaseReference femaleDB = FirebaseDatabase.getInstance().getReference().child("Users").child("Female");
-        femaleDB.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getKey().equals(user.getUid()))
-                {
-                    userSex="Female";
-                    oppositeUserSex="Male";
-                    Toast.makeText(MainActivity.this, "Reached", Toast.LENGTH_SHORT).show();
-                    getOppositeSexUsers();
-                }
-            }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -195,11 +158,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void getOppositeSexUsers()
     {
-        DatabaseReference oppositeSexDB = FirebaseDatabase.getInstance().getReference().child("Users").child(oppositeUserSex);
-        oppositeSexDB.addChildEventListener(new ChildEventListener() {
+        usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUid) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid) && dataSnapshot.child("Profile Image URL").getValue()!=null)
+                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUid) && dataSnapshot.child("Sex").getValue().toString().equals(oppositeUserSex) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid) && dataSnapshot.child("Profile Image URL").getValue()!=null)
                 {
                     cards item = new cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("Profile Image URL").getValue().toString());
                     rowItems.add(item);
@@ -236,8 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToSettings(View view) {
         Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
-        Toast.makeText(this, "Going to settings", Toast.LENGTH_SHORT).show();
-        intent.putExtra("UserSex",userSex);
         startActivity(intent);
         return;
     }
