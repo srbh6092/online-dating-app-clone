@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -41,7 +44,7 @@ public class arrayAdapter extends ArrayAdapter<cards>
         image = (ImageView)convertView.findViewById(R.id.image);
 
         name.setText(card_item.getName());
-        image.setImageResource(R.mipmap.ic_launcher);
+        Glide.with(getContext()).load(card_item.getProfileImageUrl()).into(image);
 
         return convertView;
     }

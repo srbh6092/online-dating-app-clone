@@ -4,19 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20sp"
     android:orientation="vertical"
     tools:context=".RegistrationActivity">
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:id="@+id/profileImage"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginBottom="20sp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"
-        android:id="@+id/name"/>
+        android:id="@+id/name"
+        android:background="@null"
+        android:layout_marginBottom="20sp"/>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroup">
+        android:id="@+id/radioGroup"
+        android:layout_marginBottom="20sp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -34,14 +45,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:id="@+id/email"/>
+        android:id="@+id/email"
+        android:background="@null"
+        android:layout_marginBottom="20sp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="Password"
-        android:id="@+id/password"/>
+        android:id="@+id/password"
+        android:background="@null"
+        android:layout_marginBottom="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Confirm Password"
+        android:id="@+id/confirmPassword"
+        android:background="@null"
+        android:layout_marginBottom="20sp"/>
 
     <Button
         android:layout_width="match_parent"

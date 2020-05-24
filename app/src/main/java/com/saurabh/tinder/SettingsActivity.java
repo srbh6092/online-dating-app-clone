@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -110,15 +111,23 @@ public class SettingsActivity extends AppCompatActivity {
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0)
                 {
                     Map <String, Object> map = (Map <String, Object>) dataSnapshot.getValue();
-                    name=map.get("Name").toString();
-                    phone=map.get("Phone").toString();
-                    profileImageURL=map.get("Profile Image URL").toString();
-                    if(name!=null)
+                    if(map.get("Name")!=null)
+                    {
+                        name=map.get("Name").toString();
                         mNameField.setText(name);
-                    if(phone!=null)
+                    }
+                    if(map.get("Phone")!=null)
+                    {
+                        phone=map.get("Phone").toString();
                         mPhoneField.setText(phone);
-                    if(profileImageURL!=null)
-                        Glide.with(getApplication()).load(profileImageURL).into(mProfileImage);
+                    }
+                    if(map.get("Profile Image URL")!=null)
+                    {
+                        profileImageURL=map.get("Profile Image URL").toString();
+                        Toast.makeText(SettingsActivity.this, profileImageURL, Toast.LENGTH_SHORT).show();
+                        RequestOptions options = new RequestOptions().centerCrop().placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round);
+                        Glide.with(getApplication()).load(profileImageURL).apply(options).into(mProfileImage);
+                    }
                 }
             }
 
