@@ -98,7 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 final String name = mName.getText().toString();
                 final String confirmPassword = mConfirmPassword.getText().toString();
 
-                if(password.equals(confirmPassword)) {
+                if(password.equals(confirmPassword) && resultUri!=null) {
                     if (mRadioButton.getText() == null)
                         return;
 
@@ -111,49 +111,45 @@ public class RegistrationActivity extends AppCompatActivity {
                                 final String userID = mAuth.getCurrentUser().getUid();
                                 final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(mRadioButton.getText().toString()).child(userID).child("Name");
                                 currentUserDB.setValue(name);
-                                if(resultUri!=null)
-                                {
-                                    StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userID);
-                                    Bitmap bitmap = null;
+                                StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userID);
+                                Bitmap bitmap = null;
 
-                                    try {
-                                        bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(),resultUri);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
-                                    byte[] data = baos.toByteArray();
-
-                                    UploadTask uploadTask = filepath.putBytes(data);
-                                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            finish();
-                                        }
-                                    });
-                                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                                            final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(mRadioButton.getText().toString()).child(userID).child("Profile Image URL");
-                                            currentUserDB.setValue(downloadUrl.toString());
-                                            finish();
-                                            return;
-                                        }
-                                    });
-
+                                try {
+                                    bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(),resultUri);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-                                else
-                                    finish();
+
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
+                                byte[] data = baos.toByteArray();
+
+                                UploadTask uploadTask = filepath.putBytes(data);
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        finish();
+                                    }
+                                });
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+                                        final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(mRadioButton.getText().toString()).child(userID).child("Profile Image URL");
+                                        currentUserDB.setValue(downloadUrl.toString());
+                                        finish();
+                                        return;
+                                    }
+                                });
+
                             }
                         }
                     });
                 }
-                else
+                else if(!password.equals(confirmPassword))
                     Toast.makeText(RegistrationActivity.this, "Password don't match!", Toast.LENGTH_SHORT).show();
-
+                else
+                    Toast.makeText(RegistrationActivity.this, "Fill every details!", Toast.LENGTH_SHORT).show();
             }
         });
 
