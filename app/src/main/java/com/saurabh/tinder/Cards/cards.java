@@ -1,4 +1,4 @@
-package com.saurabh.tinder;
+package com.saurabh.tinder.Cards;
 
 public class cards
 {

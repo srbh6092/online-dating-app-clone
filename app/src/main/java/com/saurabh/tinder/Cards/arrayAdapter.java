@@ -1,4 +1,4 @@
-package com.saurabh.tinder;
+package com.saurabh.tinder.Cards;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.saurabh.tinder.R;
 
 import java.util.List;
 

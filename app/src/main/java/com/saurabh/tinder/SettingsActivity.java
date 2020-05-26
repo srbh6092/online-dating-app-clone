@@ -124,7 +124,6 @@ public class SettingsActivity extends AppCompatActivity {
                     if(map.get("Profile Image URL")!=null)
                     {
                         profileImageURL=map.get("Profile Image URL").toString();
-                        Toast.makeText(SettingsActivity.this, profileImageURL, Toast.LENGTH_SHORT).show();
                         RequestOptions options = new RequestOptions().centerCrop().placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round);
                         Glide.with(getApplication()).load(profileImageURL).apply(options).into(mProfileImage);
                     }
@@ -151,7 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(resultUri!=null)
         {
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userId);
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userId);
             Bitmap bitmap = null;
 
             try {
@@ -174,12 +173,16 @@ public class SettingsActivity extends AppCompatActivity {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                    Map userInfo = new HashMap();
-                    userInfo.put("Profile Image URL",downloadUrl.toString());
-                    mUserDB.updateChildren(userInfo);
-                    finish();
-                    return;
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Map userInfo = new HashMap();
+                            userInfo.put("Profile Image URL",uri.toString());
+                            mUserDB.updateChildren(userInfo);
+                            finish();
+                            return;
+                        }
+                    });
                 }
             });
 
@@ -199,4 +202,5 @@ public class SettingsActivity extends AppCompatActivity {
             mProfileImage.setImageURI(resultUri);
         }
     }
+
 }

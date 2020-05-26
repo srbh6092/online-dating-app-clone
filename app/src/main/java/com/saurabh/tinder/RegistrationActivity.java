@@ -136,11 +136,17 @@ public class RegistrationActivity extends AppCompatActivity {
                                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-                                        final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Profile Image URL");
-                                        currentUserDB.setValue(downloadUrl.toString());
-                                        finish();
-                                        return;
+                                        final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile Images").child(userID);
+                                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                final DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Profile Image URL");
+                                                currentUserDB.setValue(uri.toString());
+                                                finish();
+                                                return;
+                                            }
+                                        });
+
                                     }
                                 });
 
