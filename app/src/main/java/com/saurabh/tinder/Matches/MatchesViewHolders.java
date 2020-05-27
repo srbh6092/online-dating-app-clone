@@ -1,6 +1,7 @@
 package com.saurabh.tinder.Matches;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.saurabh.tinder.R;
@@ -10,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView mMatchID;
+    public TextView mMatchID, mMatchName;
+    public ImageView mMatchImage;
     public MatchesViewHolders(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
 
         mMatchID= (TextView) itemView.findViewById(R.id.matchID);
+        mMatchName= (TextView) itemView.findViewById(R.id.matchName);
+        mMatchImage= (ImageView) itemView.findViewById(R.id.matchImage);
     }
 
     @Override

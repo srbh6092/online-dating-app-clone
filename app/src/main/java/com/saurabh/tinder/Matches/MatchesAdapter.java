@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.saurabh.tinder.R;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders> {
     @Override
     public void onBindViewHolder(@NonNull MatchesViewHolders holder, int position) {
         holder.mMatchID.setText(matchesList.get(position).getUserId());
+        holder.mMatchName.setText(matchesList.get(position).getName());
+        Glide.with(context).load(matchesList.get(position).getProfileImageURL()).into(holder.mMatchImage);
     }
 
     @Override
