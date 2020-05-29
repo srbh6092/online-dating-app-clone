@@ -164,11 +164,14 @@ public class MainActivity extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("nope").hasChild(currentUid) && dataSnapshot.child("Sex").getValue().toString().equals(oppositeUserSex) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid) && dataSnapshot.child("Profile Image URL").getValue()!=null&& dataSnapshot.child("Name").getValue()!=null)
+                if(dataSnapshot.exists())
                 {
-                    cards item = new cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("Profile Image URL").getValue().toString());
-                    rowItems.add(item);
-                    arrayAdapter.notifyDataSetChanged();
+                    if (dataSnapshot.child("Profile Image URL").getValue()!=null && dataSnapshot.child("Name").getValue()!=null && !dataSnapshot.child("connections").child("nope").hasChild(currentUid) && dataSnapshot.child("Sex").getValue().toString().equals(oppositeUserSex) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid))
+                    {
+                        cards item = new cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("Profile Image URL").getValue().toString());
+                        rowItems.add(item);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
                 }
             }
             @Override

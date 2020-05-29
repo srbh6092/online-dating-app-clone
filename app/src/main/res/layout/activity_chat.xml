@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".Chat.ChatActivity"
-    android:layout_marginTop="10sp">
+    android:paddingTop="10sp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/sendLayout"
-        android:layout_marginBottom="20sp">
+        android:paddingBottom="5sp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -29,19 +30,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:layout_margin="5sp"
         android:id="@+id/sendLayout">
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:hint="Type a message"
+            android:paddingHorizontal="3sp"
+            android:hint="Type a message..."
+            android:background="@drawable/box"
             android:id="@+id/message"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SEND"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/send"
+            android:text=""
             android:id="@+id/send"/>
 
     </LinearLayout>

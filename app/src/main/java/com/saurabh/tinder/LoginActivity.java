@@ -51,17 +51,20 @@ public class LoginActivity extends AppCompatActivity {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                final String email = mEmail.getText().toString();
-                final String password = mPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful())
-                            Toast.makeText(LoginActivity.this, "Login Error!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                if(mEmail.getText()!=null && mPassword.getText()!=null)
+                {
+                    final String email = mEmail.getText().toString();
+                    final String password = mPassword.getText().toString();
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful())
+                                Toast.makeText(LoginActivity.this, "Login Error!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                    Toast.makeText(LoginActivity.this, "Enter login details", Toast.LENGTH_SHORT).show();
             }
         });
 

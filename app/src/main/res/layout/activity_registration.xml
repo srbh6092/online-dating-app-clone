@@ -4,30 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20sp"
+    android:background="@drawable/background"
+    android:paddingVertical="10sp"
+    android:paddingHorizontal="50dp"
     android:orientation="vertical"
     tools:context=".RegistrationActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:gravity="center"
+        android:layout_marginBottom="10sp"
+        android:textColor="@android:color/white"
+        android:textSize="50dp"/>
+
     <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
         android:id="@+id/profileImage"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginBottom="20sp"/>
+        android:src="@drawable/dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10sp"/>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Name"
         android:id="@+id/name"
-        android:background="@null"
-        android:layout_marginBottom="20sp"/>
+        android:background="@drawable/textbox"
+        android:gravity="center"
+        android:layout_marginBottom="10sp"/>
 
     <RadioGroup
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radioGroup"
-        android:layout_marginBottom="20sp">
+        android:layout_gravity="center"
+        android:layout_marginBottom="10sp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -43,34 +57,56 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Email"
         android:id="@+id/email"
-        android:background="@null"
-        android:layout_marginBottom="20sp"/>
+        android:gravity="center"
+        android:background="@drawable/textbox"
+        android:layout_marginBottom="10sp"/>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:inputType="textPassword"
         android:hint="Password"
         android:id="@+id/password"
-        android:background="@null"
-        android:layout_marginBottom="20sp"/>
+        android:gravity="center"
+        android:background="@drawable/textbox"
+        android:layout_marginBottom="10sp"/>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:inputType="textPassword"
+        android:layout_marginBottom="10sp"
+        android:background="@drawable/textbox"
         android:hint="Confirm Password"
-        android:id="@+id/confirmPassword"
-        android:background="@null"
-        android:layout_marginBottom="20sp"/>
+        android:gravity="center"
+        android:id="@+id/confirmPassword"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/register"/>
+        android:orientation="horizontal">
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text=""
+            android:background="@drawable/register"
+            android:id="@+id/register"/>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"/>
+
+    </LinearLayout>
 
 </LinearLayout>
