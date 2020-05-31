@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@drawable/box"
-    android:padding="5sp">
+    android:padding="8sp"
+    android:layout_marginBottom="5sp">
 
     <ImageView
         android:layout_width="75sp"
         android:layout_height="75sp"
-        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
         android:id="@+id/matchImage"/>
 
     <LinearLayout

@@ -2,6 +2,7 @@ package com.saurabh.tinder.Chat;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,14 +46,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders> {
         if(chatList.get(position).getCurrentUser())
         {
             holder.mMessage.setGravity(Gravity.END);
-            holder.mMessage.setTextColor(Color.parseColor("#404040"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#F4F4F4"));
+            holder.mMessage.setTextColor(Color.parseColor("#905F7FCC"));
+            holder.mContainer.setBackgroundResource(R.drawable.sendbox);
         }
         else
         {
             holder.mMessage.setGravity(Gravity.START);
-            holder.mMessage.setTextColor(Color.parseColor("#FFFFFF"));
+            holder.mMessage.setTextColor(Color.parseColor("#906A1144"));
             holder.mContainer.setBackgroundColor(Color.parseColor("#2DB4CB"));
+            holder.mContainer.setBackgroundResource(R.drawable.recievebox);
         }
 
     }
